@@ -11,7 +11,7 @@ COPY . /app
 
 RUN pip install requests beautifulsoup4 python-dotenv
 
-#CMD python -m unittest
+#CMD python -m unittest discover tests
 CMD ["python", "./src/main.py"] 
 
 # Or enter the name of your unique directory and parameter set.
