@@ -7,9 +7,18 @@ WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
+RUN pip install --upgrade pip
+
+COPY Pipfile .
+#COPY Pipfile.lock .
+RUN pip install pipenv==2023.5.19
+RUN pipenv lock --pre
+RUN pipenv requirements > requirements.txt
+
+RUN pip install -r requirements.txt
+
 COPY . /app
 
-RUN pip install requests beautifulsoup4 python-dotenv
 
 #CMD python -m unittest discover tests
 CMD ["python", "./src/main.py"] 
