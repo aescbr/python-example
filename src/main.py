@@ -1,22 +1,20 @@
 from __future__ import annotations
 from service.pre_processing_service import PreProcessingService
 from model.request import Request
-from strategy.handler.auth_verification_handler import AuthVerificationhandler
-from strategy.handler.source_validation_handler import SourceValidationHandler
-from strategy.handler.file_extension_validation_handler import FileExtensionValidation
+from container.container import Container
+from dependency_injector.wiring import Provide, inject
 
-
-def main() -> int:
-    authVerificationHandler = AuthVerificationhandler()
-    sourceValidationHandler = SourceValidationHandler()
-    fileExtensionValidation = FileExtensionValidation()
-
-    service = PreProcessingService(authVerificationHandler, sourceValidationHandler, fileExtensionValidation);
-
+@inject
+def main(service: PreProcessingService = Provide[Container.pre_processing_service]) -> int:
+     
     request = Request("request1", ["path1", "path2"])
     service.process(request)
     return 0
 
 
+
 if __name__ == "__main__":
-   main()
+    container = Container()
+    container.init_resources()
+    container.wire(modules=[__name__])
+    main()

@@ -2,25 +2,26 @@ from model.request import Request
 from strategy.handler.auth_verification_handler import AuthVerificationhandler
 from strategy.handler.source_validation_handler import SourceValidationHandler
 from strategy.handler.file_extension_validation_handler import FileExtensionValidation
-from injector import inject 
 
 class PreProcessingService:
 
-    @inject
-    def __init__(self, authValidationHandler: AuthVerificationhandler, 
+    def __init__(self, 
                  sourceValidationHandler: SourceValidationHandler, 
-                 fileExtensionValidation: FileExtensionValidation):
-        self.authValidationHandler = authValidationHandler
+                 fileExtensionValidation: FileExtensionValidation, 
+                 authVerificationhandler: AuthVerificationhandler):
+        self.authVerificationhandler = authVerificationhandler
         self.sourceValidationHandler = sourceValidationHandler
         self.fileExtensionValidation = fileExtensionValidation
 
-    def process(self, request: Request):
+    def process(self, request: Request)-> Request:
         """
         A service to start the chain
         """
-        self.authValidationHandler.set_next(self.sourceValidationHandler).set_next(self.fileExtensionValidation)
 
-        result = self.authValidationHandler.handle(request)
+        self.authVerificationhandler.set_next(self.sourceValidationHandler).set_next(self.fileExtensionValidation)
+
+        result = self.authVerificationhandler.handle(request)
         print(result)
+        return result
     
     

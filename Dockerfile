@@ -21,6 +21,6 @@ COPY . /app
 
 
 #CMD python -m unittest discover tests
-CMD ["python", "./src/main.py"] 
+CMD ["python", "./src/main.py"]
 
 # Or enter the name of your unique directory and parameter set.
